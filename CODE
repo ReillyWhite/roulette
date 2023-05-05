@@ -1,0 +1,113 @@
+  double oldDist = 0;
+  double oldDist2 = 0;
+  double oldDist3 = 0;
+  int count = 0;
+  int count2 = 0;
+  int count3 = 0;
+  int fixedDist;
+  int fixedDist2;
+  int fixedDist3;
+
+void setup() {
+  pinMode(11, INPUT);
+  pinMode(7, INPUT);
+  pinMode(3, INPUT);
+  pinMode(12, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(2, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  //number one
+  digitalWrite(12, LOW);
+  delayMicroseconds(2);
+  digitalWrite(12, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(12, LOW);
+  double duration = pulseIn(11, HIGH);
+  double distance = (duration / 29) / 2;
+  if(distance < 100){
+    if (abs(distance - oldDist) < 10){
+      count++;
+      if (count == 1){
+        fixedDist = oldDist;
+      }
+    } else {
+      count = 0;
+    }
+    if (count > 60 && abs(distance - fixedDist) < 10){
+      noTone(10);
+      noTone(9);
+      tone(2, 784, 500);
+    } else {
+      noTone(10);
+      noTone(9);
+      tone(2, 523, 500);
+    }
+  } else {
+    digitalWrite(2, LOW);
+  }
+  //Numba too
+  digitalWrite(8, LOW);
+  delayMicroseconds(2);
+  digitalWrite(8, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(8, LOW);
+  double duration2 = pulseIn(7, HIGH);
+  double distance2 = (duration2 / 29) / 2;
+  if(distance2 < 100){
+    if (abs(distance2 - oldDist2) < 10){
+      count2++;
+      if (count2 == 1){
+        fixedDist2 = oldDist2;
+      }
+    } else {
+      count2 = 0;
+    }
+    if (count2 > 60 && abs(distance2 - fixedDist2) < 10){
+      noTone(2);
+      noTone(10);
+      tone(9, 784, 500);
+    } else {
+      noTone(2);
+      noTone(10);
+      tone(9, 523, 500);
+    }
+  } else{
+    digitalWrite(9, LOW);
+  }
+  //free
+  digitalWrite(4, LOW);
+  delayMicroseconds(2);
+  digitalWrite(4, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(4, LOW);
+  double duration3 = pulseIn(3, HIGH);
+  double distance3 = (duration3 / 29) / 2; 
+  if(distance3 < 100){
+    if (abs(distance3 - oldDist3) < 10){
+      count3++;
+      fixedDist3 = oldDist3;
+    } else {
+      count3 = 0;
+    }
+    if (count3 > 60 && abs(distance3 - fixedDist3) < 10){
+      noTone(2);
+      noTone(9);
+      tone(10, 784, 500);
+    } else {
+      noTone(2);
+      noTone(9);
+      tone(10, 523, 500);
+    }
+  } else {
+    digitalWrite(10, LOW);
+  }
+  oldDist = distance;
+  oldDist2 = distance2;
+  oldDist3 = distance3;
+}
